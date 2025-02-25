@@ -6,18 +6,14 @@ import {
   FormControlErrorIcon,
   FormControlLabel,
   FormControlLabelText,
-  FormControlHelper,
-  FormControlHelperText,
 } from "@/components/ui/form-control";
-import {
-  useNavigation,
-} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Input, InputField } from "@/components/ui/input";
 import { VStack } from "@/components/ui/vstack";
 import { AlertCircleIcon } from "@/components/ui/icon";
 import { useState } from "react";
 import { Heading } from "@/components/ui/heading";
-
+import { StyleSheet, View } from 'react-native';
 import React from "react";
 
 function AltaScreen() {
@@ -102,131 +98,146 @@ function AltaScreen() {
 }
 
   return (
-    <>
-    <Heading size="lg" className="text-center font-bold mb-4">
-      Listado de Clientes
+    <View style={styles.container}>
+      <Heading size="lg" className="text-center font-bold mb-4">
+        Alta de Cliente
       </Heading>
-    <VStack className="w-full max-w-[300px] rounded-md border border-background-200 p-4 justify-center">
-      <FormControl
-        isInvalid={submitted && !datosValidos.nombreCliente}
-        size="md"
-        isDisabled={false}
-        isReadOnly={false}
-        isRequired={true}
-      >
-        <FormControlLabel>
-          <FormControlLabelText>Nombre</FormControlLabelText>
-        </FormControlLabel>
-        <Input className="my-1" size="sm">
-          <InputField
-            type="text"
-            placeholder="Nombre del cliente"
-            value={datos.nombreCliente}
-            onChangeText={(text) => setDatos({ ...datos, nombreCliente: text })}
-          />
-        </Input>
+      <View style={styles.formContainer}>
+        <VStack className="w-full max-w-[300px] rounded-md border border-background-200 p-4 justify-center">
+          <FormControl
+            isInvalid={submitted && !datosValidos.nombreCliente}
+            size="md"
+            isDisabled={false}
+            isReadOnly={false}
+            isRequired={true}
+          >
+            <FormControlLabel>
+              <FormControlLabelText>Nombre</FormControlLabelText>
+            </FormControlLabel>
+            <Input className="my-1" size="sm">
+              <InputField
+                type="text"
+                placeholder="Nombre del cliente"
+                value={datos.nombreCliente}
+                onChangeText={(text) => setDatos({ ...datos, nombreCliente: text })}
+              />
+            </Input>
 
-        {submitted && !datosValidos.nombreCliente && (
-          <FormControlError>
-            <FormControlErrorIcon as={AlertCircleIcon} />
-            <FormControlErrorText>
-              El nombre del plato es obligatorio
-            </FormControlErrorText>
-          </FormControlError>
-        )}
-      </FormControl>
+            {submitted && !datosValidos.nombreCliente && (
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  El nombre del cliente es obligatorio
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
 
-      <FormControl
-        isInvalid={submitted && !datosValidos.apellidoCliente}
-        size="md"
-        isDisabled={false}
-        isReadOnly={false}
-        isRequired={true}
-      >
-        <FormControlLabel>
-          <FormControlLabelText>Apellido</FormControlLabelText>
-        </FormControlLabel>
-        <Input className="my-1" size="sm">
-          <InputField
-            type="text"
-            placeholder="Apellido del cliente"
-            value={datos.apellidoCliente}
-            onChangeText={(text) => setDatos({ ...datos, apellidoCliente: text })}
-          />
-        </Input>
+          <FormControl
+            isInvalid={submitted && !datosValidos.apellidoCliente}
+            size="md"
+            isDisabled={false}
+            isReadOnly={false}
+            isRequired={true}
+          >
+            <FormControlLabel>
+              <FormControlLabelText>Apellido</FormControlLabelText>
+            </FormControlLabel>
+            <Input className="my-1" size="sm">
+              <InputField
+                type="text"
+                placeholder="Apellido del cliente"
+                value={datos.apellidoCliente}
+                onChangeText={(text) => setDatos({ ...datos, apellidoCliente: text })}
+              />
+            </Input>
 
-        {submitted && !datosValidos.apellidoCliente && (
-          <FormControlError>
-            <FormControlErrorIcon as={AlertCircleIcon} />
-            <FormControlErrorText>
-              El apellido del cliente es obligatorio (Min. 3 caracteres)
-            </FormControlErrorText>
-          </FormControlError>
-        )}
-      </FormControl>
+            {submitted && !datosValidos.apellidoCliente && (
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  El apellido del cliente es obligatorio (Min. 3 caracteres)
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
 
-      <FormControl
-        isInvalid={submitted && !datosValidos.emailCliente}
-        size="md"
-        isDisabled={false}
-        isReadOnly={false}
-        isRequired={true}
-      >
-        <FormControlLabel>
-          <FormControlLabelText>Correo</FormControlLabelText>
-        </FormControlLabel>
-        <Input className="my-1" size="sm">
-          <InputField
-            type="text"
-            placeholder="Correo"
-            value={datos.emailCliente}
-            onChangeText={(text) => setDatos({ ...datos, emailCliente: text })}
-          />
-        </Input>
+          <FormControl
+            isInvalid={submitted && !datosValidos.emailCliente}
+            size="md"
+            isDisabled={false}
+            isReadOnly={false}
+            isRequired={true}
+          >
+            <FormControlLabel>
+              <FormControlLabelText>Correo</FormControlLabelText>
+            </FormControlLabel>
+            <Input className="my-1" size="sm">
+              <InputField
+                type="text"
+                placeholder="Correo"
+                value={datos.emailCliente}
+                onChangeText={(text) => setDatos({ ...datos, emailCliente: text })}
+              />
+            </Input>
 
-        {submitted && !datosValidos.emailCliente && (
-          <FormControlError>
-            <FormControlErrorIcon as={AlertCircleIcon} />
-            <FormControlErrorText>
-              El correo introducido es incorrecto
-            </FormControlErrorText>
-          </FormControlError>
-        )}
-      </FormControl>
+            {submitted && !datosValidos.emailCliente && (
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  El correo introducido es incorrecto
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
 
-      <FormControl
-        isInvalid={submitted && !datosValidos.telefonoCliente}
-        size="md"
-        isDisabled={false}
-        isReadOnly={false}
-        isRequired={true}
-      >
-        <FormControlLabel>
-          <FormControlLabelText>Telefono</FormControlLabelText>
-        </FormControlLabel>
-        <Input className="my-1" size="sm">
-          <InputField
-            type="text"
-            placeholder="Telefono"
-            value={datos.telefonoCliente}
-            onChangeText={(text) => setDatos({ ...datos, telefonoCliente: text })}
-          />
-        </Input>
+          <FormControl
+            isInvalid={submitted && !datosValidos.telefonoCliente}
+            size="md"
+            isDisabled={false}
+            isReadOnly={false}
+            isRequired={true}
+          >
+            <FormControlLabel>
+              <FormControlLabelText>Telefono</FormControlLabelText>
+            </FormControlLabel>
+            <Input className="my-1" size="sm">
+              <InputField
+                type="text"
+                placeholder="Telefono"
+                value={datos.telefonoCliente}
+                onChangeText={(text) => setDatos({ ...datos, telefonoCliente: text })}
+              />
+            </Input>
 
-        {submitted && !datosValidos.telefonoCliente && (
-          <FormControlError>
-            <FormControlErrorIcon as={AlertCircleIcon} />
-            <FormControlErrorText>El telefono debe ser minimo 9 caracteres</FormControlErrorText>
-          </FormControlError>
-        )}
-      </FormControl>
+            {submitted && !datosValidos.telefonoCliente && (
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>El telefono debe ser minimo 9 caracteres</FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
 
-      <Button className="w-fit self-end mt-4" size="sm" onPress={handleSubmit}>
-        <ButtonText>Aceptar</ButtonText>
-      </Button>
-    </VStack>
-    </>
+          <Button className="w-fit self-end mt-4" size="sm" onPress={handleSubmit}>
+            <ButtonText>Aceptar</ButtonText>
+          </Button>
+        </VStack>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f8f9fa',
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default AltaScreen;

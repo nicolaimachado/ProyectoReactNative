@@ -1,0 +1,181 @@
+// Importar libreria para respuestas
+const Respuesta = require("../utils/respuesta.js");
+const { logMensaje } = require("../utils/logger.js");
+// Recuperar función de inicialización de modelos
+const initModels = require("../models/init-models.js").initModels;
+// Crear la instancia de sequelize con la conexión a la base de datos
+const sequelize = require("../config/sequelize.js");
+
+// Cargar las definiciones del modelo en sequelize
+const models = initModels(sequelize);
+// Recuperar el modelo plato
+const Cliente = models.cliente;
+
+class ClienteController {
+  async createCliente(req, res) {
+    // Implementa la lógica para crear un nuevo plato
+    const cliente = req.body;
+
+    try {
+      const clienteNuevo = await Cliente.create(cliente);
+
+      res.status(201).json(Respuesta.exito(clienteNuevo, "Cliente insertado"));
+    } catch (err) {
+      logMensaje("Error :" + err);
+      res
+        .status(500)
+        .json(Respuesta.error(null, `Error al crear un cliente nuevo: ${cliente}`));
+    }
+  }
+
+  async getAllCliente(req, res) {
+    try {
+      const data = await Cliente.findAll(); // Recuperar todos los platos
+      res.json(Respuesta.exito(data, "Datos de clientes recuperados"));
+    } catch (err) {
+      // Handle errors during the model call
+      res
+        .status(500)
+        .json(
+          Respuesta.error(
+            null,
+            `Error al recuperar los datos de los clientes: ${req.originalUrl}`
+          )
+        );
+    }
+  }
+
+  async deleteCliente(req, res) {
+    const idCliente = req.params.idCliente;
+    try {
+      const numFilas = await Cliente.destroy({
+        where: {
+          idCliente: idCliente,
+        },
+      });
+      if (numFilas == 0) {
+        // No se ha encontrado lo que se quería borrar
+        res
+          .status(404)
+          .json(Respuesta.error(null, "No encontrado: " + idCliente));
+      } else {
+        res.status(204).json(Respuesta.exito(null, "Cliente eliminado"));
+      }
+    } catch (err) {
+      logMensaje("Error :" + err);
+      res
+        .status(500)
+        .json(
+          Respuesta.error(
+            null,
+            `Error al eliminar los datos: ${req.originalUrl}`
+          )
+        );
+    }
+  }
+
+
+  async getClienteById(req, res) {
+    const idCliente = req.params.idCliente;
+    try {
+      const fila = await Cliente.findByPk(idCliente); 
+      if(fila){
+        res.json(Respuesta.exito(fila, "Cliente recuperado"));
+      } else {
+        res.status(404).json(Respuesta.error(null, "Cliente no encontrado"));
+      }
+
+    } catch (err) {
+      logMensaje("Error :" + err);
+      res
+        .status(500)
+        .json(
+          Respuesta.error(
+            null,
+            `Error al recuperar los datos: ${req.originalUrl}`
+          )
+        );
+    }
+  }
+
+  async updateCliente(req, res) {
+    const cliente = req.body; // Recuperamos datos para actualizar
+    const idCliente = req.params.idCliente; // dato de la ruta
+
+    // Petición errónea, no coincide el id del plato de la ruta con el del objeto a actualizar
+    if (idCliente != cliente.idCliente) {
+      return res
+        .status(400)
+        .json(Respuesta.error(null, "El id del cliente no coincide"));
+    }
+
+    try {
+      const numFilas = await Cliente.update({ ...cliente }, { where: { idCliente } });
+
+      if (numFilas == 0) {
+        // No se ha encontrado lo que se quería actualizar o no hay nada que cambiar
+        res
+          .status(404)
+          .json(Respuesta.error(null, "No encontrado o no modificado: " + idCliente));
+      } else {
+        // Al dar status 204 no se devuelva nada
+        // res.status(204).json(Respuesta.exito(null, "Plato actualizado"));
+        res.status(204).send();
+      }
+    } catch (err) {
+      logMensaje("Error :" + err);
+      res
+        .status(500)
+        .json(
+          Respuesta.error(
+            null,
+            `Error al actualizar los datos: ${req.originalUrl}`
+          )
+        );
+    }
+  }
+
+  async getClientePorNombre(req, res) {
+      const nombre = req.params.nombreCliente;
+      try {
+        const filas = await Cliente.findAll({
+          where: {
+            nombreCliente: nombre
+          }
+        });
+    
+        if (filas) {
+          res.json(Respuesta.exito(filas, "Clientes recuperados"));
+        } else {
+          res.status(404).json(Respuesta.error(null, "No se encontraron clientes con el nombre especificado"));
+        }
+    
+      } catch (err) {
+        logMensaje("Error :" + err);
+        res
+          .status(500)
+          .json(
+            Respuesta.error(
+              null,
+              `Error al recuperar los datos: ${req.originalUrl}`
+            )
+          );
+      }
+    }
+
+
+}
+
+module.exports = new ClienteController();
+
+// Structure of result (MySQL)
+// {
+//   fieldCount: 0,
+//   affectedRows: 1, // Number of rows affected by the query
+//   insertId: 1,     // ID generated by the insertion operation
+//   serverStatus: 2,
+//   warningCount: 0,
+//   message: '',
+//   protocol41: true,
+//   changedRows: 0   // Number of rows changed by the query
+// }
