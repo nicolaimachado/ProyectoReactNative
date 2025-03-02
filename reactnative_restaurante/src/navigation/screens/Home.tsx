@@ -1,15 +1,34 @@
-import { Button, Text } from 'react-native';
+import { Button, Text, Image } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 export function HomeScreen() {
+  const navigation = useNavigation<NavigationProp<any>>();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bienvenido a Nuestro Restaurante</Text>
+      <Image
+        source={require('../../assets/logo.png')} // Adjust the path as necessary
+        style={styles.logo}
+      />
+      <Text style={styles.title}>Bienvenido a Restaurante Delicatesse</Text>
       <Text style={styles.description}>
-        Explore nuestro menú, gestione sus clientes y mucho más.
+        Gestione los clientes desde esta pagina.
       </Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Alta de Cliente"
+          onPress={() => navigation.navigate('Alta')}
+          color="#007bff"
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Listado de Clientes"
+          onPress={() => navigation.navigate('Listado')}
+          color="#007bff"
+        />
+      </View>
     </View>
   );
 }
@@ -21,6 +40,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#f8f9fa',
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
